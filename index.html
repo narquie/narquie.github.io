@@ -27,12 +27,17 @@
                     xdomain = [0,100];
                     xrange = [0,200];
                     ydomain = [0,100];
-                    yrange = [0,200];
+                    yrange = [200,0];
                     xs = d3.scaleLinear().domain(xdomain).range(xrange);
                     ys = d3.scaleLinear().domain(ydomain).range(yrange);
                     d3.select('svg').attr("width",width + 2*margin).attr("height",height + 2*margin).append("g")
                     .attr("transform","translate("+margin+","+margin+")").selectAll('circle').data(data)
-                    .enter().append("circle").attr('x',function(d,i) {return xs(d.pretest);}).attr('y',function(d,i) {return ys(margin+height-d.posttest);});
+                    .enter().append("circle").attr('cx',function(d,i) {return xs(d.pretest);}).attr('cy',function(d,i) {return ys(d.posttest);})
+                    .attr("r",5).attr("fill-opacity",1).attr("fill",function(d,i){ if(d.gender=="Female"){return "pink"}else{return "blue"}}).attr(fill-opacity,.5);
+                    d3.select("svg").append("g").attr("transform","translate("+margin+","+(height-margin)+")").call(d3.axisBottom(xs));
+                    d3.select("svg").append("text").attr("transform","translate("+(width/2)+","+(height-margin+40)+")").style("text-anchor", "middle").text("Pretest");
+                    d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(ys));
+                    d3.select("svg").append("text").attr("transform","rotate(-90)").attr("y",margin).attr("x",0-(height/2)).style("text-anchor", "middle").text("Posttest");
                 }
         </script>
     </body>
