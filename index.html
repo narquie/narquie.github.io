@@ -26,7 +26,7 @@
                     d3.select('svg').attr("width",width + 2*margin).attr("height",height + 2*margin).append("g")
                     .attr("transform","translate("+margin+","+margin+")").selectAll('circle').data(data)
                     .enter().append("circle").attr('cx',function(d,i) {return xs(d.pretest);}).attr('cy',function(d,i) {return ys(d.posttest);})
-                    .attr("r",5).attr("fill-opacity",.5).attr("fill",function(d,i){ if(d.gender=="Female"){return "pink"}else{return "blue"}})
+                    .attr("r",5).attr("fill-opacity",.5).attr("fill",function(d,i){ if(d.gender=="Female"){return "pink"}else{return "light-blue"}})
                     d3.select("svg").append("g").attr("transform","translate("+margin+","+(height-margin)+")").call(d3.axisBottom(xs));
                     d3.select("svg").append("text").attr("transform","translate("+(width/2)+","+(height-margin+40)+")").style("text-anchor", "middle").text("Pretest");
                     d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(ys));
