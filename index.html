@@ -20,7 +20,19 @@
         <script>
                 async function init() {
                     const data = await d3.csv('https://narquie.github.io/test_scores.csv');
+                    margin = 50
+                    height = 300
+                    width = 300
                     console.log(data);
+                    xdomain = [0,100];
+                    xrange = [0,200];
+                    ydomain = [0,100];
+                    yrange = [0,200];
+                    xs = d3.scaleLinear().domain(xdomain).range(xrange);
+                    ys = d3.scaleLinear().domain(ydomain).range(yrange);
+                    d3.select('svg').attr("width",width + 2*margin).attr("height",height + 2*margin).append("g")
+                    .attr("transform","translate("+margin+","+margin+")").selectAll('circle').data(data)
+                    .enter().append("circle").attr('x',function(d,i) {return xs(d.pretest);}).attr('y',function(d,i) {return ys(margin+height-d.posttest);});
                 }
         </script>
     </body>
