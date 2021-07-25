@@ -2,35 +2,33 @@
 <script src='https://d3js.org/d3.v5.min.js'></script>
 
 <body>
-    <svg width=150 height=300>
-    </svg>
     <script>
         <html>
             <script src='https://d3js.org/d3.v5.min.js'></script>
     <body onload='init()'>
-        <svg width=300 height=300>
+        <svg width=500 height=500>
         </svg>
         <script>
                 async function init() {
                     const data = await d3.csv('https://narquie.github.io/test_scores.csv');
-                    margin = 50
-                    height = 300
-                    width = 300
+                    margin = 200
+                    height = 1000
+                    width = 1000
                     console.log(data);
                     xdomain = [0,100];
-                    xrange = [0,200];
+                    xrange = [0,500];
                     ydomain = [0,100];
-                    yrange = [200,0];
+                    yrange = [500,0];
                     xs = d3.scaleLinear().domain(xdomain).range(xrange);
                     ys = d3.scaleLinear().domain(ydomain).range(yrange);
-                    d3.select('svg').attr("width",width + 2*margin).attr("height",height + 2*margin).append("g")
+                    d3.select('svg').attr("width",width + margin).attr("height",height + margin).append("g")
                     .attr("transform","translate("+margin+","+margin+")").selectAll('circle').data(data)
                     .enter().append("circle").attr('cx',function(d,i) {return xs(d.pretest);}).attr('cy',function(d,i) {return ys(d.posttest);})
-                    .attr("r",5).attr("fill-opacity",.5).attr("fill",function(d,i){ if(d.gender=="Female"){return "pink"}else{return "light-blue"}})
-                    d3.select("svg").append("g").attr("transform","translate("+margin+","+(height-margin)+")").call(d3.axisBottom(xs));
-                    d3.select("svg").append("text").attr("transform","translate("+(width/2)+","+(height-margin+40)+")").style("text-anchor", "middle").text("Pretest");
+                    .attr("r",5).attr("fill",function(d,i){ if(d.gender=="Female"){return "pink"}else{return "#add8e6"}})
+                    d3.select("svg").append("g").attr("transform","translate("+margin+","+(height/2+margin)+")").call(d3.axisBottom(xs));
+                    d3.select("svg").append("text").attr("transform","translate("+(width/4 + margin)+","+(height/2+margin+50)+")").style("text-anchor", "middle").text("Pretest");
                     d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(ys));
-                    d3.select("svg").append("text").attr("transform","rotate(-90)").attr("y",margin).attr("x",0-(height/2)).style("text-anchor", "middle").text("Posttest");
+                    d3.select("svg").append("text").attr("transform","rotate(-90)").attr("y",margin-50).attr("x",-(height/4 + margin)).style("text-anchor", "middle").text("Posttest");
                 }
         </script>
     </body>
