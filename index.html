@@ -10,6 +10,7 @@
         </svg>
         <script>
                 async function init() {
+                    // Main Scatterplot
                     const data = await d3.csv('https://narquie.github.io/test_scores.csv');
                     margin = 200
                     height = 1000
@@ -21,14 +22,133 @@
                     yrange = [500,0];
                     xs = d3.scaleLinear().domain(xdomain).range(xrange);
                     ys = d3.scaleLinear().domain(ydomain).range(yrange);
-                    d3.select('svg').attr("width",width + margin).attr("height",height + margin).append("g")
-                    .attr("transform","translate("+margin+","+margin+")").selectAll('circle').data(data)
-                    .enter().append("circle").attr('cx',function(d,i) {return xs(d.pretest);}).attr('cy',function(d,i) {return ys(d.posttest);})
-                    .attr("r",5).attr("fill",function(d,i){ if(d.gender=="Female"){return "pink"}else{return "#add8e6"}})
-                    d3.select("svg").append("g").attr("transform","translate("+margin+","+(height/2+margin)+")").call(d3.axisBottom(xs));
-                    d3.select("svg").append("text").attr("transform","translate("+(width/4 + margin)+","+(height/2+margin+50)+")").style("text-anchor", "middle").text("Pretest");
-                    d3.select("svg").append("g").attr("transform","translate("+margin+","+margin+")").call(d3.axisLeft(ys));
-                    d3.select("svg").append("text").attr("transform","rotate(-90)").attr("y",margin-50).attr("x",-(height/4 + margin)).style("text-anchor", "middle").text("Posttest");
+                    d3.select('svg')
+                    .attr("width",width + margin)
+                    .attr("height",height + margin)
+                    .append("g")
+                    .attr("transform","translate("+margin+","+margin+")")
+                    .selectAll('circle')
+                    .data(data)
+                    .enter()
+                    .append("circle")
+                    .attr('cx',function(d,i) {return xs(d.pretest);})
+                    .attr('cy',function(d,i) {return ys(d.posttest);})
+                    .attr("r",5)
+                    .attr("fill",function(d,i){ if(d.gender=="Female"){return "#DB25C3"}else{return "#256FDB"}})
+                    d3.select("svg")
+                    .append("g")
+                    .attr("transform","translate("+margin+","+(height/2+margin)+")")
+                    .call(d3.axisBottom(xs));
+                    d3.select("svg")
+                    .append("text").attr("transform","translate("+(width/4 + margin)+","+(height/2+margin+50)+")")
+                    .style("text-anchor", "middle")
+                    .text("Pretest");
+                    d3.select("svg")
+                    .append("g")
+                    .attr("transform","translate("+margin+","+margin+")")
+                    .call(d3.axisLeft(ys));
+                    d3.select("svg")
+                    .append("text")
+                    .attr("transform","rotate(-90)")
+                    .attr("y",margin-50)
+                    .attr("x",-(height/4 + margin))
+                    .style("text-anchor", "middle")
+                    .text("Posttest");
+                    
+                    // Bar Chart School Region
+                    xbarrange = [0,200]
+                    ybarrange = [200,0]
+                    xsbar = d3.scaleLinear().domain(xdomain).range(xbarrange);
+                    ysbar = d3.scaleLinear().domain(ydomain).range(ybarrange);
+                    rural = d3.mean(data.filter(d => d.school_setting === "Rural"), d => d.posttest)
+                    urban = d3.mean(data.filter(d => d.school_setting === "Urban"), d => d.posttest)
+                    suburban = d3.mean(data.filter(d => d.school_setting === "Suburban"), d => d.posttest)
+                    d3.select('svg')
+                    .attr("width",width + margin)
+                    .attr("height",height + margin)
+                    .append("g")
+                    .attr("transform","translate("+margin+","+margin*1.25+")")
+                    .selectAll('rect')
+                    .data([0,1,2])
+                    .enter()
+                    .append('rect')
+                        .attr('x',function(d,i){return 550 + i*40;})
+                        .attr('y',function(d,i) {if(i==0){return ysbar(rural)}else{if(i==1){return ysbar(urban)}else{return ysbar(suburban)}};})
+                        .attr('width',30)
+                        .attr('height',function(d,i) {if(i==0){return xsbar(rural)}else{if(i==1){return xsbar(urban)}else{return xsbar(suburban)}};})
+                        .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{if(i==1){return "#FF7F7F"}else{return "#aacbe9"}};});
+                    d3.select("svg")
+                    .append("g")
+                    .attr("transform","translate("+750+","+250+")")
+                    .call(d3.axisLeft(ysbar));
+                    
+                    // Teaching type
+                    standard = d3.mean(data.filter(d => d.teaching_method === "Standard"), d => d.posttest)
+                    experimental = d3.mean(data.filter(d => d.teaching_method === "Experimental"), d => d.posttest)
+                    d3.select('svg')
+                    .attr("width",width + margin)
+                    .attr("height",height + margin)
+                    .append("g")
+                    .attr("transform","translate("+margin+","+margin*1.25+")")
+                    .selectAll('rect')
+                    .data([0,1])
+                    .enter()
+                    .append('rect')
+                        .attr('x',function(d,i){return 785 + i*40;})
+                        .attr('y',function(d,i) {if(i==0){return ysbar(standard)}else{return ysbar(experimental)};})
+                        .attr('width',30)
+                        .attr('height',function(d,i) {if(i==0){return xsbar(standard)}else{return xsbar(experimental)};})
+                        .style('fill',function(d,i) {if(i==0){return "#E4D00A"}else{return "#CBC3E3"};});
+                    d3.select("svg")
+                    .append("g")
+                    .attr("transform","translate("+985+","+250+")")
+                    .call(d3.axisLeft(ysbar));
+                    
+                    // Public vs Private
+                    public = d3.mean(data.filter(d => d.school_type === "Public"), d => d.posttest)
+                    private = d3.mean(data.filter(d => d.school_type === "Non-public"), d => d.posttest)
+                    d3.select('svg')
+                    .attr("width",width + margin)
+                    .attr("height",height + margin)
+                    .append("g")
+                    .attr("transform","translate("+margin+","+margin*1.50+")")
+                    .selectAll('rect')
+                    .data([0,1])
+                    .enter()
+                    .append('rect')
+                        .attr('x',function(d,i){return 550 + i*40;})
+                        .attr('y',function(d,i) {if(i==0){return ysbar(public)+200}else{return ysbar(private)+200};})
+                        .attr('width',30)
+                        .attr('height',function(d,i) {if(i==0){return xsbar(public)}else{return xsbar(private)};})
+                        .style('fill',function(d,i) {if(i==0){return "#aacbe9"}else{return "#d3d3d3"};});
+                    d3.select("svg")
+                    .append("g")
+                    .attr("transform","translate("+750+","+500+")")
+                    .call(d3.axisLeft(ysbar));
+                    
+
+                    // Qualifies for free lunch
+                    qualify = d3.mean(data.filter(d => d.lunch === "Qualifies for reduced/free lunch"), d => d.posttest)
+                    not_qualify = d3.mean(data.filter(d => d.lunch === "Does not qualify"), d => d.posttest)
+                    d3.select('svg')
+                    .attr("width",width + margin)
+                    .attr("height",height + margin)
+                    .append("g")
+                    .attr("transform","translate("+margin+","+margin*1.5+")")
+                    .selectAll('rect')
+                    .data([0,1])
+                    .enter()
+                    .append('rect')
+                        .attr('x',function(d,i){return 785 + i*40;})
+                        .attr('y',function(d,i) {if(i==0){return ysbar(qualify)+200}else{return ysbar(not_qualify)+200};})
+                        .attr('width',30)
+                        .attr('height',function(d,i) {if(i==0){return xsbar(qualify)}else{return xsbar(not_qualify)};})
+                        .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{return "#FF7F7F"};});
+                    
+                    d3.select("svg")
+                    .append("g")
+                    .attr("transform","translate("+985+","+500+")")
+                    .call(d3.axisLeft(ysbar));
                 }
         </script>
     </body>
