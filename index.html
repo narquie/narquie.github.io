@@ -35,6 +35,13 @@
                     .attr('cy',function(d,i) {return ys(d.posttest);})
                     .attr("r",5)
                     .attr("fill",function(d,i){ if(d.gender=="Female"){return "#DB25C3"}else{return "#256FDB"}})
+                    .on("mouseover", function(d,i) {
+                                d3.select(this).attr('stroke', "black").append("title").text(function(d,i){return d.gender + " , " + d.pretest});
+                            })
+                        .on("mouseout", function() {
+                            d3.select(this).attr('stroke',"none");
+                            d3.select(this).select("title").remove();
+                        })
                     d3.select("svg")
                     .append("g")
                     .attr("transform","translate("+margin+","+(height/2+margin)+")")
@@ -76,6 +83,12 @@
                         .attr('y',function(d,i) {if(i==0){return ysbar(rural)}else{if(i==1){return ysbar(urban)}else{return ysbar(suburban)}};})
                         .attr('width',30)
                         .attr('height',function(d,i) {if(i==0){return xsbar(rural)}else{if(i==1){return xsbar(urban)}else{return xsbar(suburban)}};})
+                        .on("mouseover", function() {
+                                d3.select(this).attr('stroke', "black");
+                            })
+                        .on("mouseout", function() {
+                            d3.select(this).attr('stroke',"none");
+                        })
                         .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{if(i==1){return "#FF7F7F"}else{return "#aacbe9"}};});
                     d3.select("svg")
                     .append("g")
@@ -125,6 +138,12 @@
                         .attr('y',function(d,i) {if(i==0){return ysbar(standard)}else{return ysbar(experimental)};})
                         .attr('width',30)
                         .attr('height',function(d,i) {if(i==0){return xsbar(standard)}else{return xsbar(experimental)};})
+                        .on("mouseover", function() {
+                                d3.select(this).attr('stroke', "black");
+                            })
+                        .on("mouseout", function() {
+                            d3.select(this).attr('stroke',"none");
+                        })
                         .style('fill',function(d,i) {if(i==0){return "#E4D00A"}else{return "#CBC3E3"};});
                     d3.select("svg")
                     .append("g")
@@ -140,7 +159,7 @@
                     d3.select("svg")
                     .append("text")
                     .attr("x",-400)
-                    .attr("y",1025)
+                    .attr("y",1045)
                     .style("text-anchor", "end")
                     .text("Experimental")
                     .attr("transform","rotate(-90)");
@@ -167,6 +186,12 @@
                         .attr('y',function(d,i) {if(i==0){return ysbar(public)+200}else{return ysbar(private)+200};})
                         .attr('width',30)
                         .attr('height',function(d,i) {if(i==0){return xsbar(public)}else{return xsbar(private)};})
+                        .on("mouseover", function() {
+                                d3.select(this).attr('stroke', "black");
+                            })
+                        .on("mouseout", function() {
+                            d3.select(this).attr('stroke',"none");
+                        })
                         .style('fill',function(d,i) {if(i==0){return "#aacbe9"}else{return "#d3d3d3"};});
                     d3.select("svg")
                     .append("g")
@@ -182,7 +207,7 @@
                     d3.select("svg")
                     .append("text")
                     .attr("x",-700)
-                    .attr("y",820)
+                    .attr("y",810)
                     .style("text-anchor", "end")
                     .text("Non-public")
                     .attr("transform","rotate(-90)");
@@ -210,6 +235,12 @@
                         .attr('y',function(d,i) {if(i==0){return ysbar(qualify)+200}else{return ysbar(not_qualify)+200};})
                         .attr('width',30)
                         .attr('height',function(d,i) {if(i==0){return xsbar(qualify)}else{return xsbar(not_qualify)};})
+                        .on("mouseover", function() {
+                                d3.select(this).attr('stroke', "black");
+                            })
+                        .on("mouseout", function() {
+                            d3.select(this).attr('stroke',"none");
+                        })
                         .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{return "#FF7F7F"};});
                     d3.select("svg")
                     .append("g")
@@ -225,7 +256,7 @@
                     d3.select("svg")
                     .append("text")
                     .attr("x",-700)
-                    .attr("y",1025)
+                    .attr("y",1045)
                     .style("text-anchor", "end")
                     .text("Does not qualify")
                     .attr("transform","rotate(-90)");
