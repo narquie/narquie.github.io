@@ -67,7 +67,7 @@
                     .attr("width",width + margin)
                     .attr("height",height + margin)
                     .append("g")
-                    .attr("transform","translate("+margin+","+margin*1.25+")")
+                    .attr("transform","translate("+margin+","+margin+")")
                     .selectAll('rect')
                     .data([0,1,2])
                     .enter()
@@ -79,8 +79,35 @@
                         .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{if(i==1){return "#FF7F7F"}else{return "#aacbe9"}};});
                     d3.select("svg")
                     .append("g")
-                    .attr("transform","translate("+750+","+250+")")
+                    .attr("transform","translate("+750+","+200+")")
                     .call(d3.axisLeft(ysbar));
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-400)
+                    .attr("y",770)
+                    .style("text-anchor", "end")  
+                    .text("Rural")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-400)
+                    .attr("y",810)
+                    .style("text-anchor", "end")
+                    .text("Urban")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-400)
+                    .attr("y",850)
+                    .style("text-anchor", "end")
+                    .text("Suburban")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",750)
+                    .attr("y",200)
+                    .style("text-anchor", "start")  
+                    .text("School Region")
                     
                     // Teaching type
                     standard = d3.mean(data.filter(d => d.teaching_method === "Standard"), d => d.posttest)
@@ -89,7 +116,7 @@
                     .attr("width",width + margin)
                     .attr("height",height + margin)
                     .append("g")
-                    .attr("transform","translate("+margin+","+margin*1.25+")")
+                    .attr("transform","translate("+margin+","+margin+")")
                     .selectAll('rect')
                     .data([0,1])
                     .enter()
@@ -101,8 +128,28 @@
                         .style('fill',function(d,i) {if(i==0){return "#E4D00A"}else{return "#CBC3E3"};});
                     d3.select("svg")
                     .append("g")
-                    .attr("transform","translate("+985+","+250+")")
+                    .attr("transform","translate("+985+","+200+")")
                     .call(d3.axisLeft(ysbar));
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-400)
+                    .attr("y",1005)
+                    .style("text-anchor", "end")  
+                    .text("Standard")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-400)
+                    .attr("y",1025)
+                    .style("text-anchor", "end")
+                    .text("Experimental")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",985)
+                    .attr("y",200)
+                    .style("text-anchor", "start")  
+                    .text("Teaching Method")
                     
                     // Public vs Private
                     public = d3.mean(data.filter(d => d.school_type === "Public"), d => d.posttest)
@@ -125,6 +172,26 @@
                     .append("g")
                     .attr("transform","translate("+750+","+500+")")
                     .call(d3.axisLeft(ysbar));
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-700)
+                    .attr("y",770)
+                    .style("text-anchor", "end")  
+                    .text("Public")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-700)
+                    .attr("y",820)
+                    .style("text-anchor", "end")
+                    .text("Non-public")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",750)
+                    .attr("y",500)
+                    .style("text-anchor", "start")  
+                    .text("Type of School")
                     
 
                     // Qualifies for free lunch
@@ -144,11 +211,30 @@
                         .attr('width',30)
                         .attr('height',function(d,i) {if(i==0){return xsbar(qualify)}else{return xsbar(not_qualify)};})
                         .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{return "#FF7F7F"};});
-                    
                     d3.select("svg")
                     .append("g")
                     .attr("transform","translate("+985+","+500+")")
                     .call(d3.axisLeft(ysbar));
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-700)
+                    .attr("y",1005)
+                    .style("text-anchor", "end")  
+                    .text("Qualifies for reduced/free lunch")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",-700)
+                    .attr("y",1025)
+                    .style("text-anchor", "end")
+                    .text("Does not qualify")
+                    .attr("transform","rotate(-90)");
+                    d3.select("svg")
+                    .append("text")
+                    .attr("x",985)
+                    .attr("y",500)
+                    .style("text-anchor", "start")  
+                    .text("Qualifies for reduced/free lunch")
                 }
         </script>
     </body>
