@@ -53,9 +53,68 @@
                             return(experimental && standard && qualify && notqualify && rural && urban && suburban && private && public)
                         }), d => d.posttest);   // The function returns the product of p1 and p2
                     }
-                        function redraw(src){
-                            $('script[src="' + src + '"]').remove();
-                            $('<script>').attr('src', src).appendTo('head');
+                        function redraw(){
+                            var sel = d3.select("svg").selectAll("g").selectAll("rect").data(data).transition().duration(1000)
+                            .attr('y',function(d,i) {
+                                switch(i) {
+                                case 0:
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,true,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 1:
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,true,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 2:
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,true,filterprivate,filterpublic]))
+                                    break;
+                                case 3:
+                                    return ysbar(meanCondition(data,[filterexperimental,true,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 4:
+                                    return ysbar(meanCondition(data,[true,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 5:
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,true]))
+                                    break;
+                                case 6:
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,true,filterpublic]))
+                                    break;
+                                case 7:
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,true,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 8:
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,true,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                            };})
+                            .attr('height',function(d,i) {
+                                switch(i) {
+                                case 0:
+                                    return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,true,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 1:
+                                    return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,true,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 2:
+                                    return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,true,filterprivate,filterpublic]))
+                                    break;
+                                case 3:
+                                    return xsbar(meanCondition(data,[filterexperimental,true,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 4:
+                                    return xsbar(meanCondition(data,[true,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 5:
+                                    return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,true]))
+                                    break;
+                                case 6:
+                                    return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,true,filterpublic]))
+                                    break;
+                                case 7:
+                                    return xsbar(meanCondition(data,[filterexperimental,filterstandard,true,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                                case 8:
+                                    return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,true,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
+                            };});
                         }
                         // Main Scatterplot
                         margin = 200
@@ -167,6 +226,7 @@
                                         filtersuburban = false;
                                     }
                                 }
+                                redraw()
                             })
                             .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{if(i==1){return "#FF7F7F"}else{return "#aacbe9"}};});
                         d3.select("svg")
@@ -238,6 +298,7 @@
                                         filterstandard = false;
                                     }
                                 }
+                                redraw()
                             })
                             .style('fill',function(d,i) {if(i==0){return "#E4D00A"}else{return "#CBC3E3"};});
                         d3.select("svg")
@@ -302,6 +363,7 @@
                                         filterprivate = false;
                                     }
                                 }
+                                redraw()
                             })
                             .style('fill',function(d,i) {if(i==0){return "#aacbe9"}else{return "#d3d3d3"};});
                         d3.select("svg")
@@ -354,21 +416,26 @@
                             })
                             .on("click",function(d,i){
                                 console.log("click")
-                                if(i == 0 && !filterqualify){
-                                    filterqualify = true;
-                                } else {
-                                    if(i == 0 && filterqualify){
-                                        filterqualify = false;
-                                    }
+                                if((i == 0 && filternotqualify) || (i == 1 && filterqualify)){
+                                    d3.select(this).transition().duration(2000).attr("stroke","red").attr("stroke-width",5).transition().duration(500).attr("stroke","none").attr("stroke-width",1)
                                 }
-                                if(i == 1 && !filternotqualify){
-                                    filternotqualify = true;
-                                } else {
-                                    if(i == 1 && filternotqualify){
-                                        filternotqualify = false;
+                                else {
+                                    if(i == 0 && !filterqualify){
+                                        filterqualify = true;
+                                    } else {
+                                        if(i == 0 && filterqualify){
+                                            filterqualify = false;
+                                        }
                                     }
+                                    if(i == 1 && !filternotqualify){
+                                        filternotqualify = true;
+                                    } else {
+                                        if(i == 1 && filternotqualify){
+                                            filternotqualify = false;
+                                        }
+                                    }
+                                    redraw();
                                 }
-                                redraw()
                             })
                             .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{return "#FF7F7F"};});
                         d3.select("svg")
