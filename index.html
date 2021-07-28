@@ -54,9 +54,10 @@
                         }), d => d.posttest);   // The function returns the product of p1 and p2
                     }
                         function redraw(){
-                            var sel = d3.select("svg").selectAll("g").selectAll("rect").data(data).transition().duration(1000)
+                            var sel = d3.select("svg").selectAll("g").selectAll("rect")
                             .attr('y',function(d,i) {
-                                switch(i) {
+                                console.log(d)
+                                switch(d) {
                                 case 0:
                                     return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,true,filterurban,filtersuburban,filterprivate,filterpublic]))
                                     break;
@@ -67,26 +68,26 @@
                                     return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,true,filterprivate,filterpublic]))
                                     break;
                                 case 3:
-                                    return ysbar(meanCondition(data,[filterexperimental,true,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
-                                    break;
-                                case 4:
                                     return ysbar(meanCondition(data,[true,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
                                     break;
+                                case 4:
+                                    return ysbar(meanCondition(data,[filterexperimental,true,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    break;
                                 case 5:
-                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,true]))
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,true])) + 200
                                     break;
                                 case 6:
-                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,true,filterpublic]))
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,true,filterpublic])) + 200
                                     break;
                                 case 7:
-                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,true,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,true,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic])) + 200
                                     break;
                                 case 8:
-                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,true,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,true,filterrural,filterurban,filtersuburban,filterprivate,filterpublic])) + 200
                                     break;
                             };})
                             .attr('height',function(d,i) {
-                                switch(i) {
+                                switch(d) {
                                 case 0:
                                     return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,true,filterurban,filtersuburban,filterprivate,filterpublic]))
                                     break;
@@ -97,10 +98,10 @@
                                     return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,true,filterprivate,filterpublic]))
                                     break;
                                 case 3:
-                                    return xsbar(meanCondition(data,[filterexperimental,true,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    return xsbar(meanCondition(data,[true,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
                                     break;
                                 case 4:
-                                    return xsbar(meanCondition(data,[true,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
+                                    return xsbar(meanCondition(data,[filterexperimental,true,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
                                     break;
                                 case 5:
                                     return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,true]))
@@ -195,9 +196,9 @@
                         .enter()
                         .append('rect')
                             .attr('x',function(d,i){return 550 + i*40;})
-                            .attr('y',function(d,i) {if(i==0){return ysbar(rural)}else{if(i==1){return ysbar(urban)}else{return ysbar(suburban)}};})
+                            .attr('y',function(d,i) {if(d==0){return ysbar(rural)}else{if(d==1){return ysbar(urban)}else{return ysbar(suburban)}};})
                             .attr('width',30)
-                            .attr('height',function(d,i) {if(i==0){return xsbar(rural)}else{if(i==1){return xsbar(urban)}else{return xsbar(suburban)}};})
+                            .attr('height',function(d,i) {if(d==0){return xsbar(rural)}else{if(d==1){return xsbar(urban)}else{return xsbar(suburban)}};})
                             .on("mouseover", function() {
                                     d3.select(this).attr('stroke', "black");
                                 })
@@ -205,35 +206,35 @@
                                 d3.select(this).attr('stroke',"none");
                             })
                             .on("click",function(d,i){
-                                if((i == 0 && filterurban && filtersuburban) || (i == 1 && filterrural && filtersuburban) || (i == 1 && filterrural && filterurban)){
+                                if((d == 0 && filterurban && filtersuburban) || (d == 1 && filterrural && filtersuburban) || (d == 1 && filterrural && filterurban)){
                                     d3.select(this).transition().duration(2000).attr("stroke","red").attr("stroke-width",5).transition().duration(100).attr("stroke","none").attr("stroke-width",1)
                                 }
                                 else {
-                                    if(i == 0 && !filterrural){
+                                    if(d == 0 && !filterrural){
                                         filterrural = true;
                                     } else {
-                                        if(i == 0 && filterrural){
+                                        if(d == 0 && filterrural){
                                             filterrural = false;
                                         }
                                     }
-                                    if(i == 1 && !filterurban){
+                                    if(d == 1 && !filterurban){
                                         filterurban = true;
                                     } else {
-                                        if(i == 1 && filterurban){
+                                        if(d == 1 && filterurban){
                                             filterurban = false;
                                         }
                                     }
-                                    if(i == 2 && !filtersuburban){
+                                    if(d == 2 && !filtersuburban){
                                         filtersuburban = true;
                                     } else {
-                                        if(i == 2 && filtersuburban){
+                                        if(d == 2 && filtersuburban){
                                             filtersuburban = false;
                                         }
                                     }
                                     redraw()
                                 }
                             })
-                            .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{if(i==1){return "#FF7F7F"}else{return "#aacbe9"}};});
+                            .style('fill',function(d,i) {if(d==0){return "#32CD32"}else{if(d==1){return "#FF7F7F"}else{return "#aacbe9"}};});
                         d3.select("svg")
                         .append("g")
                         .attr("transform","translate("+750+","+200+")")
@@ -275,13 +276,13 @@
                         .append("g")
                         .attr("transform","translate("+margin+","+margin+")")
                         .selectAll('rect')
-                        .data([0,1])
+                        .data([3,4])
                         .enter()
                         .append('rect')
                             .attr('x',function(d,i){return 785 + i*40;})
-                            .attr('y',function(d,i) {if(i==0){return ysbar(standard)}else{return ysbar(experimental)};})
+                            .attr('y',function(d,i) {if(d==3){return ysbar(standard)}else{return ysbar(experimental)};})
                             .attr('width',30)
-                            .attr('height',function(d,i) {if(i==0){return xsbar(standard)}else{return xsbar(experimental)};})
+                            .attr('height',function(d,i) {if(d==3){return xsbar(standard)}else{return xsbar(experimental)};})
                             .on("mouseover", function() {
                                     d3.select(this).attr('stroke', "black");
                                 })
@@ -289,28 +290,28 @@
                                 d3.select(this).attr('stroke',"none");
                             })
                             .on("click",function(d,i){
-                                if((i == 0 && filterstandard) || (i == 1 && filterexperimental)){
+                                if((d == 3 && filterstandard) || (d == 4 && filterexperimental)){
                                     d3.select(this).transition().duration(2000).attr("stroke","red").attr("stroke-width",5).transition().duration(100).attr("stroke","none").attr("stroke-width",1)
                                 }
                                 else {
-                                    if(i == 0 && !filterexperimental){
+                                    if(d == 3 && !filterexperimental){
                                         filterexperimental = true;
                                     } else {
-                                        if(i == 0 && filterexperimental){
+                                        if(d == 3 && filterexperimental){
                                             filterexperimental = false;
                                         }
                                     }
-                                    if(i == 1 && !filterstandard){
+                                    if(d == 4 && !filterstandard){
                                         filterstandard = true;
                                     } else {
-                                        if(i == 1 && filterstandard){
+                                        if(d == 4 && filterstandard){
                                             filterstandard = false;
                                         }
                                     }
                                     redraw()
                                 }
                             })
-                            .style('fill',function(d,i) {if(i==0){return "#E4D00A"}else{return "#CBC3E3"};});
+                            .style('fill',function(d,i) {if(d==3){return "#E4D00A"}else{return "#CBC3E3"};});
                         d3.select("svg")
                         .append("g")
                         .attr("transform","translate("+985+","+200+")")
@@ -345,13 +346,13 @@
                         .append("g")
                         .attr("transform","translate("+margin+","+margin*1.50+")")
                         .selectAll('rect')
-                        .data([0,1])
+                        .data([5,6])
                         .enter()
                         .append('rect')
                             .attr('x',function(d,i){return 550 + i*40;})
-                            .attr('y',function(d,i) {if(i==0){return ysbar(public)+200}else{return ysbar(private)+200};})
+                            .attr('y',function(d,i) {if(d==5){return ysbar(public)+200}else{return ysbar(private)+200};})
                             .attr('width',30)
-                            .attr('height',function(d,i) {if(i==0){return xsbar(public)}else{return xsbar(private)};})
+                            .attr('height',function(d,i) {if(d==5){return xsbar(public)}else{return xsbar(private)};})
                             .on("mouseover", function() {
                                     d3.select(this).attr('stroke', "black");
                                 })
@@ -359,28 +360,28 @@
                                 d3.select(this).attr('stroke',"none");
                             })
                             .on("click",function(d,i){
-                                if((i == 0 && filterprivate) || (i == 1 && filterpublic)){
+                                if((d == 5 && filterprivate) || (d == 6 && filterpublic)){
                                     d3.select(this).transition().duration(2000).attr("stroke","red").attr("stroke-width",5).transition().duration(100).attr("stroke","none").attr("stroke-width",1)
                                 }
                                 else {
-                                    if(i == 0 && !filterpublic){
+                                    if(d == 5 && !filterpublic){
                                         filterpublic = true;
                                     } else {
-                                        if(i == 0 && filterpublic){
+                                        if(d == 5 && filterpublic){
                                             filterpublic = false;
                                         }
                                     }
-                                    if(i == 1 && !filterprivate){
+                                    if(d == 6 && !filterprivate){
                                         filterprivate = true;
                                     } else {
-                                        if(i == 1 && filterprivate){
+                                        if(d == 6 && filterprivate){
                                             filterprivate = false;
                                         }
                                     }
                                     redraw()
                                 }
                             })
-                            .style('fill',function(d,i) {if(i==0){return "#aacbe9"}else{return "#d3d3d3"};});
+                            .style('fill',function(d,i) {if(d==5){return "#aacbe9"}else{return "#d3d3d3"};});
                         d3.select("svg")
                         .append("g")
                         .attr("transform","translate("+750+","+500+")")
@@ -416,13 +417,13 @@
                         .append("g")
                         .attr("transform","translate("+margin+","+margin*1.5+")")
                         .selectAll('rect')
-                        .data([0,1])
+                        .data([7,8])
                         .enter()
                         .append('rect')
                             .attr('x',function(d,i){return 785 + i*40;})
-                            .attr('y',function(d,i) {if(i==0){return ysbar(qualify)+200}else{return ysbar(notqualify)+200};})
+                            .attr('y',function(d,i) {if(d==7){return ysbar(qualify)+200}else{return ysbar(notqualify)+200};})
                             .attr('width',30)
-                            .attr('height',function(d,i) {if(i==0){return xsbar(qualify)}else{return xsbar(notqualify)};})
+                            .attr('height',function(d,i) {if(d==7){return xsbar(qualify)}else{return xsbar(notqualify)};})
                             .on("mouseover", function() {
                                     d3.select(this).attr('stroke', "black");
                                 })
@@ -431,28 +432,28 @@
                             })
                             .on("click",function(d,i){
                                 console.log("click")
-                                if((i == 0 && filternotqualify) || (i == 1 && filterqualify)){
+                                if((d == 7 && filternotqualify) || (d == 8 && filterqualify)){
                                     d3.select(this).transition().duration(2000).attr("stroke","red").attr("stroke-width",5).transition().duration(100).attr("stroke","none").attr("stroke-width",1)
                                 }
                                 else {
-                                    if(i == 0 && !filterqualify){
+                                    if(d == 7 && !filterqualify){
                                         filterqualify = true;
                                     } else {
-                                        if(i == 0 && filterqualify){
+                                        if(d == 7 && filterqualify){
                                             filterqualify = false;
                                         }
                                     }
-                                    if(i == 1 && !filternotqualify){
+                                    if(d == 8 && !filternotqualify){
                                         filternotqualify = true;
                                     } else {
-                                        if(i == 1 && filternotqualify){
+                                        if(d == 8 && filternotqualify){
                                             filternotqualify = false;
                                         }
                                     }
                                     redraw();
                                 }
                             })
-                            .style('fill',function(d,i) {if(i==0){return "#32CD32"}else{return "#FF7F7F"};});
+                            .style('fill',function(d,i) {if(d==7){return "#32CD32"}else{return "#FF7F7F"};});
                         d3.select("svg")
                         .append("g")
                         .attr("transform","translate("+985+","+500+")")
