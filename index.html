@@ -11,6 +11,46 @@
         <script>
                 async function init() {
                     const data = await d3.csv('https://narquie.github.io/test_scores.csv');
+                    // Boolean for visibility on circles
+                    function invisCirc(d,parameters) {
+                        var experimental = true;
+                        if (parameters[0]){
+                            experimental = (d.teaching_method === "Experimental")
+                        }
+                        var standard = true;
+                        if (parameters[1]){
+                            standard = (d.teaching_method === "Standard")
+                        }
+                        var qualify = true;
+                        if (parameters[2]){
+                            qualify = (d.lunch === "Qualifies for reduced/free lunch")
+                        }
+                        var notqualify = true;
+                        if (parameters[3]){
+                            notqualify = (d.lunch === "Does not qualify")
+                        }
+                        var rural = true;
+                        if (parameters[4]){
+                            rural = (d.school_setting === "Rural")
+                        }
+                        var urban = true;
+                        if (parameters[5]){
+                            urban = (d.school_setting === "Urban")
+                        }
+                        var suburban = true;
+                        if (parameters[6]){
+                            suburban = (d.school_setting === "Suburban")
+                        }
+                        var private = true;
+                        if (parameters[7]){
+                            private = (d.school_type === "Non-public")
+                        }
+                        var public = true;
+                        if (parameters[8]){
+                            public = (d.school_type === "Public")
+                        }
+                        return(experimental && standard && qualify && notqualify && rural && urban && suburban && private && public)
+                    }
                     // Filtering function
                     function meanCondition(data, parameters) {
                         return d3.mean(data.filter(function(d) {
@@ -54,7 +94,7 @@
                         }), d => d.posttest);   // The function returns the product of p1 and p2
                     }
                         function redraw(){
-                            var sel = d3.select("svg").selectAll("g").selectAll("rect")
+                            d3.select("svg").selectAll("g").selectAll("rect")
                             .attr('y',function(d,i) {
                                 console.log(d)
                                 switch(d) {
@@ -116,6 +156,13 @@
                                     return xsbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,true,filterrural,filterurban,filtersuburban,filterprivate,filterpublic]))
                                     break;
                             };});
+                            d3.select("svg").selectAll("g").selectAll("circle").attr("visibility",function(d,i){
+                                if(invisCirc(d,[filterexperimental,filterstandard,filterqualify,filternotqualify,filterrural,filterurban,filtersuburban,filterprivate,filterpublic])){
+                                    return "visible"
+                                } else {
+                                    return "hidden"
+                                }
+                            })
                         }
                         // Main Scatterplot
                         margin = 200
