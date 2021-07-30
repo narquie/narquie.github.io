@@ -284,8 +284,15 @@
                             .style('fill',function(d,i) {if(d==0){return "#32CD32"}else{if(d==1){return "#FF7F7F"}else{return "#aacbe9"}};});
                         d3.select("svg")
                         .append("g")
-                        .attr("transform","translate("+(margin*3)+150+","+margin+")")
+                        .attr("transform","translate("+750+","+margin+")")
                         .call(d3.axisLeft(ysbar));
+                        d3.select("svg")
+                        .append("text")
+                        .attr("x",margin * (-1) - 80)
+                        .attr("y",margin*3 + 110)
+                        .style("text-anchor", "end")  
+                        .text("Posttest")
+                        .attr("transform","rotate(-90)");
                         d3.select("svg")
                         .append("text")
                         .attr("x",margin*(-2))
@@ -361,8 +368,15 @@
                             .style('fill',function(d,i) {if(d==3){return "#E4D00A"}else{return "#CBC3E3"};});
                         d3.select("svg")
                         .append("g")
-                        .attr("transform","translate("+(margin*4)+185+","+margin+")")
+                        .attr("transform","translate("+985+","+margin+")")
                         .call(d3.axisLeft(ysbar));
+                        d3.select("svg")
+                        .append("text")
+                        .attr("x",margin * (-1) - 80)
+                        .attr("y",margin*4 + 140)
+                        .style("text-anchor", "end")  
+                        .text("Posttest")
+                        .attr("transform","rotate(-90)");
                         d3.select("svg")
                         .append("text")
                         .attr("x",margin * (-2))
@@ -431,8 +445,15 @@
                             .style('fill',function(d,i) {if(d==5){return "#aacbe9"}else{return "#d3d3d3"};});
                         d3.select("svg")
                         .append("g")
-                        .attr("transform","translate("+(margin*3)+150+","+(margin*2)+100+")")
+                        .attr("transform","translate("+750+","+500+")")
                         .call(d3.axisLeft(ysbar));
+                        d3.select("svg")
+                        .append("text")
+                        .attr("x",margin * (-2) - 170)
+                        .attr("y",margin*3 + 110)
+                        .style("text-anchor", "end")  
+                        .text("Posttest")
+                        .attr("transform","rotate(-90)");
                         d3.select("svg")
                         .append("text")
                         .attr("x",margin * (-3) - 100)
@@ -503,8 +524,15 @@
                             .style('fill',function(d,i) {if(d==7){return "#32CD32"}else{return "#FF7F7F"};});
                         d3.select("svg")
                         .append("g")
-                        .attr("transform","translate("+(margin*4)+185+","+(margin*2)+100+")")
+                        .attr("transform","translate("+985+","+500+")")
                         .call(d3.axisLeft(ysbar));
+                        d3.select("svg")
+                        .append("text")
+                        .attr("x",margin * (-2) - 170)
+                        .attr("y",margin*4 + 140)
+                        .style("text-anchor", "end")  
+                        .text("Posttest")
+                        .attr("transform","rotate(-90)");
                         d3.select("svg")
                         .append("text")
                         .attr("x",margin * (-3) - 100)
