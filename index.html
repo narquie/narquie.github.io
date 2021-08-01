@@ -6,13 +6,14 @@
     <script>
         <html>
             <script src='https://d3js.org/d3.v5.min.js'></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-annotation/2.5.1/d3-annotation.min.js"></script>
     <body onload='init()'>
         <h1 style="position: absolute; left:200px; white-space: nowrap;"> Test Scores After Experimental Or Non-Experimental Instruction </h1> 
-        <p style="position: absolute; left:300px; top: 80px;">This dataset is based on the pretest and posttest results of students when evaluated on a certain subject before and after they learn a subject. 
+        <p style="position: absolute; left:300px; top: 60px;">This dataset is based on the pretest and posttest results of students when evaluated on a certain subject before and after they learn a subject. 
             The teaching was done in either an experimental (students were given experiments to run that related to the lesson) or standard (non-experimental) 
             understanding of the class, and they were evaluated from there. The bar graph on the right of the figure is interactable and will filter both the 
-            results for the scatterplot and the bar graphs.</p>
-        <svg width=500 height=700 >
+            results for the scatterplot and the bar graphs. Press the buttons below to move to the next scene with new annotations.<br></p>
+            <svg width=500 height=700 >
         </svg>
         <script>
                 async function init() {
@@ -102,7 +103,7 @@
                         function redraw(){
                             d3.select("svg").selectAll("g").selectAll("rect")
                             .attr('y',function(d,i) {
-                                console.log(d)
+                                
                                 switch(d) {
                                 case 0:
                                     return ysbar(meanCondition(data,[filterexperimental,filterstandard,filterqualify,filternotqualify,true,filterurban,filtersuburban,filterprivate,filterpublic]))
@@ -505,7 +506,7 @@
                                 d3.select(this).attr('stroke',"none");
                             })
                             .on("click",function(d,i){
-                                console.log("click")
+                                
                                 if((d == 7 && filternotqualify) || (d == 8 && filterqualify)){
                                     d3.select(this).transition().duration(2000).attr("stroke","red").attr("stroke-width",5).transition().duration(100).attr("stroke","none").attr("stroke-width",1)
                                 }
@@ -559,6 +560,354 @@
                         .attr("y",margin*2 + 100)
                         .style("text-anchor", "start")  
                         .text("Reduced/free lunch")
+
+                        var buttonNames = ["Scene 1", "Scene 2", "Scene 3", "Free Form"]
+                        d3.select("p")
+                        .style("text-align", "center")
+                        .selectAll("input")
+                        .data(buttonNames)
+                        .enter()
+                        .append("input")
+                        .attr("dy","1em")
+                        .attr("type","button")
+                        .attr("class","button")
+                        .attr("value", function (d){return d;} )
+                        .on("click",function(d,i){
+                            switch (d) {
+                                case "Scene 1":
+                                    changeScene(1);
+                                    break;
+                                case "Scene 2":
+                                    changeScene(2);
+                                    break;
+                                case "Scene 3":
+                                    changeScene(3);
+                                    break;
+                                case "Free Form":
+                                    changeScene(4);
+                                    break;
+                            }
+                        })
+                        
+                        function changeScene (num) {
+                            d3.select("svg").selectAll("g.annotation-group").remove()
+                            switch (num) {
+                                case 1:
+                                    filterexperimental = false
+                                    filterstandard = false
+                                    filterqualify = false
+                                    filternotqualify = false
+                                    filterrural = false
+                                    filterurban = false
+                                    filtersuburban = false
+                                    filterprivate = false
+                                    filterpublic = false
+                                    redraw()
+                                    var annotations = [{
+                                    note: {
+                                        label: "In addition, seems to be little correlation between sex (blue: Male, pink: Female) and test results",
+                                        title: "Pretest and Posttest Positively Correlated",
+                                        wrap: 150
+                                    },
+                                    x: 640,
+                                    y: 280,
+                                    dy: 250,
+                                    dx: -240,
+                                    subject: {
+                                        radius: 50,
+                                        radiusPadding: 5,
+                                        connector: "arrow",
+                                    },
+                                    connector: {
+                                        end: "arrow"
+                                    },
+                                    },
+                                    {
+                                    note: {
+                                        label: 'These metrics marked "Wealthy" (Experimental teaching method, Non-public schools, and not qualifying for reduced/free lunch) are more likely to be attributed to kids with wealthy parents',
+                                        title: 'Differentiation by Wealth',
+                                        wrap: 200
+                                    },
+                                    x: margin * 4 + 20,
+                                    y: margin * 3 + 80,
+                                    dy: -1,
+                                    dx: -140,
+                                    subject: {
+                                        radius: 50,
+                                        radiusPadding: 5
+                                    },
+                                }
+                                ]
+
+                                    var makeAnnotations = d3.annotation()
+                                    .notePadding(15)
+                                    .annotations(annotations)
+
+                                    d3.select("svg")
+                                    .append("g")
+                                    .attr("class", "annotation-group")
+                                    .call(makeAnnotations)
+
+                                    var type = d3.annotationBadge
+
+                                    var badges = [{
+                                    x: margin * 5 + 55,
+                                    y: margin * 1 + 180,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    },{
+                                    x: margin * 4 + 20,
+                                    y: margin * 3 + 80,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    },{
+                                    x: margin * 5 + 55,
+                                    y: margin * 3 + 80,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    }].map(function(d){ d.color = "#00b300"; return d})
+
+                                    var makeBadges = d3.annotation()
+                                    .notePadding(15)
+                                    .type(type)
+                                    .annotations(badges)
+
+                                    d3.select("svg")
+                                    .append("g")
+                                    .attr("class", "annotation-group")
+                                    .call(makeBadges)
+
+                                    break;
+                                case 2:
+                                    filterexperimental = true
+                                    filterstandard = false
+                                    filterqualify = false
+                                    filternotqualify = false
+                                    filterrural = false
+                                    filterurban = false
+                                    filtersuburban = false
+                                    filterprivate = false
+                                    filterpublic = false
+                                    redraw()
+                                    var annotations = [{
+                                    x: 640,
+                                    y: 280,
+                                    dy: 250,
+                                    dx: -240,
+                                    color: "red",
+                                    subject: {
+                                        radius: 50,
+                                        radiusPadding: 5,
+                                        connector: "arrow",
+                                    },
+                                    connector: {
+                                        end: "arrow"
+                                    },
+                                    },
+                                    {
+                                    note: {
+                                        label: "When we only look at classrooms that were taught with experimental lessons, at every point on the previous line (to the right), the students with experimental lessons have higher Posttest score",
+                                        title: "Experimental Lessons Correlates With An Increase In The Average Posttest Score",
+                                        wrap: 300,
+                                    },
+                                    x: 625,
+                                    y: 265,
+                                    dy: 235,
+                                    dx: -225,
+                                    color: "green",
+                                    subject: {
+                                        radius: 50,
+                                        radiusPadding: 5,
+                                        connector: "arrow",
+                                    },
+                                    connector: {
+                                        end: "arrow"
+                                    },
+                                    },]
+
+                                    var makeAnnotations = d3.annotation()
+                                    .notePadding(15)
+                                    .annotations(annotations)
+
+                                    d3.select("svg")
+                                    .append("g")
+                                    .attr("class", "annotation-group")
+                                    .call(makeAnnotations)
+                                    var type = d3.annotationBadge
+
+                                    var badges = [{
+                                    x: margin * 5 + 55,
+                                    y: margin * 1 + 180,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    },{
+                                    x: margin * 4 + 20,
+                                    y: margin * 3 + 80,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    },{
+                                    x: margin * 5 + 55,
+                                    y: margin * 3 + 80,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    }].map(function(d){ d.color = "#00b300"; return d})
+
+                                    var makeBadges = d3.annotation()
+                                    .notePadding(15)
+                                    .type(type)
+                                    .annotations(badges)
+
+                                    d3.select("svg")
+                                    .append("g")
+                                    .attr("class", "annotation-group")
+                                    .call(makeBadges)
+                                    break;
+                                case 3:
+                                    filterexperimental = true
+                                    filterstandard = false
+                                    filterqualify = false
+                                    filternotqualify = true
+                                    filterrural = false
+                                    filterurban = false
+                                    filtersuburban = false
+                                    filterprivate = true
+                                    filterpublic = false
+                                    redraw()
+                                    var annotations = [{
+                                    x: 640,
+                                    y: 280,
+                                    dy: 250,
+                                    dx: -240,
+                                    color: "red",
+                                    subject: {
+                                        radius: 50,
+                                        radiusPadding: 5,
+                                        connector: "arrow",
+                                    },
+                                    connector: {
+                                        end: "arrow"
+                                    },
+                                    },
+                                    {
+                                    x: 625,
+                                    y: 265,
+                                    dy: 235,
+                                    dx: -225,
+                                    color: "green",
+                                    subject: {
+                                        radius: 50,
+                                        radiusPadding: 5,
+                                        connector: "arrow",
+                                    },
+                                    connector: {
+                                        end: "arrow"
+                                    },
+                                    },{
+                                    type: d3.annotationCalloutCircle,
+                                    note: {
+                                        label: "All of the students that were worse on both Pretest and Posttest were from public schools, and qualified for lunch subsidies, indicating they were not as wealthy as the rest of the scatterplot above",
+                                        title: "More Money = More Accessible Learning",
+                                        wrap: 300
+                                    },
+                                    //settings for the subject, in this case the circle radius
+                                    subject: {
+                                        radius: 70
+                                    },
+                                    x: 400,
+                                    y: 420,
+                                    dy: 100,
+                                    dx: 0
+                                    }]
+                                    
+                                    var makeAnnotations = d3.annotation()
+                                    .notePadding(15)
+                                    .annotations(annotations)
+
+                                    d3.select("svg")
+                                    .append("g")
+                                    .attr("class", "annotation-group")
+                                    .call(makeAnnotations)
+
+                                    var type = d3.annotationBadge
+
+                                    var badges = [{
+                                    x: margin * 5 + 55,
+                                    y: margin * 1 + 180,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    },{
+                                    x: margin * 4 + 20,
+                                    y: margin * 3 + 80,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    },{
+                                    x: margin * 5 + 55,
+                                    y: margin * 3 + 80,
+                                    dy: 137,
+                                    dx: 162,
+                                    subject: {
+                                        text: "Wealthy",
+                                        radius: 25
+                                    }
+                                    }].map(function(d){ d.color = "#00b300"; return d})
+
+                                    var makeBadges = d3.annotation()
+                                    .notePadding(15)
+                                    .type(type)
+                                    .annotations(badges)
+
+                                    d3.select("svg")
+                                    .append("g")
+                                    .attr("class", "annotation-group")
+                                    .call(makeBadges)
+                                    break;
+                                case 4:
+                                    filterexperimental = false
+                                    filterstandard = false
+                                    filterqualify = false
+                                    filternotqualify = false
+                                    filterrural = false
+                                    filterurban = false
+                                    filtersuburban = false
+                                    filterprivate = false
+                                    filterpublic = false
+                                    redraw()
+                                    break;
+                            }
+                        }
+                        changeScene(1);
                 }
         </script>
     </body>
