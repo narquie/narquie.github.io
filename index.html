@@ -561,7 +561,7 @@
                         .style("text-anchor", "start")  
                         .text("Reduced/free lunch")
 
-                        var buttonNames = ["Scene 1", "Scene 2", "Scene 3", "Free Form"]
+                        var buttonNames = ["Scene 1", "Scene 2", "Scene 3"]
                         d3.select("p")
                         .style("text-align", "begin")
                         .selectAll("input")
@@ -582,9 +582,6 @@
                                     break;
                                 case "Scene 3":
                                     changeScene(3);
-                                    break;
-                                case "Free Form":
-                                    changeScene(4);
                                     break;
                             }
                         })
@@ -613,6 +610,7 @@
                                     y: 280,
                                     dy: 250,
                                     dx: -240,
+                                    color: "red",
                                     subject: {
                                         radius: 50,
                                         radiusPadding: 5,
@@ -892,18 +890,6 @@
                                     .append("g")
                                     .attr("class", "annotation-group")
                                     .call(makeBadges)
-                                    break;
-                                case 4:
-                                    filterexperimental = false
-                                    filterstandard = false
-                                    filterqualify = false
-                                    filternotqualify = false
-                                    filterrural = false
-                                    filterurban = false
-                                    filtersuburban = false
-                                    filterprivate = false
-                                    filterpublic = false
-                                    redraw()
                                     break;
                             }
                         }
